@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ventoye | Welcome to my personal page!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 基础设置 --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            line-height: 1.4;
+            letter-spacing: 0.5px; /* 增加全局字间距 */
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; /* 防止横向滚动条 */
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- 核心布局 (Grid Split) --- */
+        .page-wrapper {
+            max-width: 1440px; 
+            margin: 0 auto;
+            display: grid;
+            /* 左侧固定宽 300px，右侧自适应 */
+            grid-template-columns: 300px 1fr;
+            gap: 80px;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        /* --- 左侧固定栏 (Sticky Sidebar) --- */
+        .left-sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* 确保 Contact me 沉底 */
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+
+        /* 顶部 Logo */
+        .brand {
+            margin-bottom: 80px; /* 增加Logo与下方内容的间距 */
+        }
+
+        .brand h1 {
+            font-size: 26px;
+            font-weight: 500;
+            color: #ffffff;
+            line-height: 1.2;
+            letter-spacing: 0px;
+        }
+
+        .brand p {
+            font-size: 26px;
+            font-weight: 300;
+            font-style: italic;
+            color: #999999;
+            margin-top: 0;
+            letter-spacing: 0px;
+        }
+
+        /* 中间内容容器 */
+        .sidebar-middle {
+            /* 这里不需要特定样式，作为容器存在 */
+        }
+
+        /* 1. 修改反馈：Intro 上方增加分割线 */
+        .intro-container {
+            border-top: 1px solid #777777; /* 分割线 */
+            padding-top: 30px;
+            margin-bottom: 80px;
+        }
+
+        .intro {
+            font-size: 16px;
+            color: #ffffff;
+            max-width: 280px;
+            line-height: 1.4;
+        }
+
+        /* 2. 修改反馈：联系方式交互 */
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-item {
+            border-top: 1px solid #333; /* 顶部分割线 */
+            padding: 18px 10px; /* 增加左右padding，让hover时的背景不显得太挤 */
+            font-size: 14px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* 背景色过渡 */
+            margin: 0 -10px; /* 负margin抵消padding，保证分割线视觉上依然是对齐网格的 */
+            /* 但为了让背景色和分割线长度一致，我们需要让border也跟着宽一点或者保持原样 */
+        }
+
+        /* 为了精确控制线长和背景色长度一致，最好的做法是 margin:0, padding-left/right: 小数值 */
+        .contact-item {
+            margin: 0;
+            padding: 16px 8px 16px 8px; /* 给一点内部空间，右侧padding控制分割线宽度 */
+            width: calc(100% - 40px); /* 调整宽度，让分割线右边减少 */
+        }
+
+        .contact-item a {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .arrow {
+            display: inline-block;
+            transform: rotate(-45deg);
+            margin-left: 6px;
+            font-size: 14px;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        /* 悬停状态 (Hover State) */
+        .contact-item:hover {
+            background-color: #ffffff; /* 背景变白 */
+        }
+
+        .contact-item:hover a {
+            color: #000000; /* 文字变黑 */
+            font-weight: 500; /* 可选：稍微加粗一点增加对比 */
+        }
+
+        .contact-item:hover .arrow {
+            color: #000000; /* 箭头变黑 */
+        }
+
+
+        /* 左侧底部 Contact me */
+        .footer-contact {
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            margin-top: auto; /* 确保它位于容器最底部 */
+        }
+
+        /* --- 右侧滚动内容 (Scrollable Main) --- */
+        .right-content {
+            padding-top: 80px;
+            padding-bottom: 100px;
+        }
+
+        .works-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 86px;
+        }
+
+        .works-link {
+            font-size: 16px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        /* Section 通用样式 */
+        section {
+            border-top: 1px solid #777777;
+            padding-top: 30px;
+            margin-bottom: 80px;
+        }
+
+        .section-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            font-style: italic;
+            margin-bottom: 50px;
+            display: block;
+        }
+
+        /* 工作经历 */
+        .experience-list {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        .experience-item {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+            border-top: 1px solid #333; /* 顶部分割线 */
+            padding-top: 50px;
+            width: calc(100% - 20px); /* 调整宽度，让分割线右边减少 */
+        }
+
+
+
+        .job-info h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .job-meta {
+            font-size: 15px;
+            color: #999999;
+            line-height: 1.6;
+        }
+
+        .job-desc ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .job-desc ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #ffffff;
+            font-size:22px;
+            line-height: 1;
+        }
+
+        /* 技能 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .skill-group h4 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #999999;
+            margin-bottom: 12px;
+        }
+
+        .skill-group ul li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 6px;
+            color: #ffffff;
+            font-size: 15px;
+        }
+        
+        .skill-group ul li::before {
+            content: "•";
+            position: absolute;
+            padding-left: 10px;
+            left: 0;
+            color: #ffffff;
+            font-size:22px;
+            line-height: 1;
+        }
+
+        /* 教育 */
+        .education-row {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 60px;
+        }
+        
+        .uni-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .degree-info {
+            font-size: 15px;
+            color: #ffffff;
+        }
+        
+        .minor-info {
+            display: block;
+            color: #999999;
+            margin-top: 2px;
+        }
+
+        /* --- 响应式适配 --- */
+        @media (max-width: 1024px) {
+            .page-wrapper {
+                grid-template-columns: 240px 1fr;
+                gap: 40px;
+                padding: 0 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-wrapper {
+                display: block;
+                padding: 30px 24px;
+            }
+
+            .left-sidebar {
+                position: static;
+                height: auto;
+                width: 100%;
+                padding-top: 0;
+                padding-bottom: 60px;
+                margin-bottom: 40px;
+                border-bottom: 1px solid #333;
+            }
+
+            .brand, .intro-container {
+                margin-bottom: 40px;
+            }
+
+            .footer-contact {
+                display: none;
+            }
+
+            .right-content {
+                padding-top: 0;
+            }
+
+            .works-header {
+                display: none;
+            }
+
+            section {
+                margin-bottom: 60px;
+                border-top: none;
+            }
+
+            .section-label {
+                border-bottom: 1px solid #333;
+                padding-bottom: 10px;
+                margin-bottom: 30px;
+                width: 100%;
+            }
+
+            .experience-item, .education-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-footer {
+                display: block;
+                margin-top: 80px;
+                font-size: 16px;
+                font-weight: 500;
+                color: #fff;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-footer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        
+        <aside class="left-sidebar">
+            <div class="top-group">
+                <div class="brand">
+                    <h1>ventoye</h1>
+                    <p>Wentao Wang</p>
+                </div>
+
+                <div class="sidebar-middle">
+                    <div class="intro-container">
+                        <p class="intro">
+                            A seasoned Senior Producer with 10+ years of experience, I excel in leading complex marketing and design projects from concept to completion.
+                        </p>
+                    </div>
+
+                    <div class="contact-list">
+                        <div class="contact-item">
+                            <a href="mailto:ventoya@qq.com">ventoya@qq.com <span class="arrow">➜</span></a>
+                        </div>
+                        <div class="contact-item">
+                            <a href="#">+86 13262839715 <span class="arrow">➜</span></a>
+                        </div>
+                        <div class="contact-item">
+                            <a href="#">www.openhub.cn <span class="arrow">➜</span></a>
+                        </div>
+                        <div class="contact-item">
+                            <a href="#">www.dji.cy.com <span class="arrow">➜</span></a>
+                        </div>
+                        <div class="contact-item">
+                            <a href="#">www.openbot.com <span class="arrow">➜</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-contact">
+                Contact me
+            </div>
+        </aside>
+
+        <main class="right-content">
+            
+            <div class="works-header">
+                <a href="#" class="works-link">WORKS <span class="arrow">➜</span></a>
+            </div>
+
+            <section class="experience-section">
+                <span class="section-label">Experience</span>
+                
+                <div class="experience-list">
+                    <article class="experience-item">
+                        <div class="job-info">
+                            <h3>Full-Stack Visual Design <span class="arrow">➜</span></h3>
+                            <div class="job-meta">
+                                Dongjijiao Art Design<br>
+                                June 2025-Present<br>
+                                Base & Hangzhou, CN
+                            </div>
+                        </div>
+                        <div class="job-desc">
+                            <ul>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives. A catalyst for collaboration across all mediums.</li>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives. A catalyst for collaboration across all mediums.</li>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives. A catalyst for collaboration across all mediums.</li>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives.</li>
+                                <li>Seamlessly facilitate diverse creative experiences.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="experience-item">
+                        <div class="job-info">
+                            <h3>Full-Stack Visual Design <span class="arrow">➜</span></h3>
+                            <div class="job-meta">
+                                Dongjijiao Art Design<br>
+                                June 2023-Present<br>
+                                Base & Hangzhou, CN
+                            </div>
+                        </div>
+                        <div class="job-desc">
+                            <ul>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives. A catalyst for collaboration across all mediums.</li>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives. A catalyst for collaboration across all mediums.</li>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives.</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="experience-item">
+                        <div class="job-info">
+                            <h3>Full-Stack Visual Design <span class="arrow">➜</span></h3>
+                            <div class="job-meta">
+                                Dongjijiao Art Design<br>
+                                June 2023-Present<br>
+                                Base & Hangzhou, CN
+                            </div>
+                        </div>
+                        <div class="job-desc">
+                            <ul>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives. A catalyst for collaboration across all mediums.</li>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives. A catalyst for collaboration across all mediums.</li>
+                                <li>Seamlessly facilitate diverse creative experiences: from immersive installations to cinematic narratives.</li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="skills-section">
+                <span class="section-label">Skills</span>
+                <div class="skills-grid">
+                    <div class="skill-group">
+                        <h4>Project Management</h4>
+                        <ul>
+                            <li>Budget Management & Forecasting</li>
+                            <li>Timeline Development & Execution</li>
+                            <li>Vendor & Contract Negotiation</li>
+                            <li>On-Site Production Management</li>
+                        </ul>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Project Management</h4>
+                        <ul>
+                            <li>Budget Management & Forecasting</li>
+                            <li>Timeline Development & Execution</li>
+                            <li>Vendor & Contract Negotiation</li>
+                            <li>On-Site Production Management</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="education-section">
+                <span class="section-label">Skills</span>
+                <div class="education-row">
+                    <div class="uni-name">University of California, Los Angeles <span class="arrow">➜</span></div>
+                    <div class="degree-details">
+                        <div class="degree-info">Bachelor of Fine Arts in Graphic Design</div>
+                        <span class="minor-info">Minor: Studio Photography</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="mobile-footer">Contact me</div>
+            
+        </main>
+    </div>
+
+</body>
+</html>
